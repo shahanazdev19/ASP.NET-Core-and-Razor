@@ -1,0 +1,60 @@
+Install Microsoft.ASPNetCore.MVC.Razor.RunTimeCompilation
+Add AddRazorRuntimeCompilation() in Startup.cs file as-
+	public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddRazorPages().AddRazorRuntimeCompilation();
+        }
+
+-------------------------------------
+For sql setup in project
+-------------------------------------
+install package 
+-Microsoft.EntityFrameworkCore
+-Microsoft.EntityFrameworkCore.SqlServer
+-Microsoft.EntityFrameworkCore.Tools
+
+-------------------------------------
+set connectionstring in appsetting.json file
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=DESKTOP-J0EF4I6\\MSSQLSERVER2017;Database=BookListRazor;Trusted_Connection=True;MultipleActiveResultSets=True"
+  },
+-------------------------------------
+Add a class Book
+Add DbSet in ApplicationDBContext as Book
+configure Startup.cs for sql server in ConfigureServices
+	public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddDbContext<ApplicationDBContext>(option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddRazorPages().AddRazorRuntimeCompilation();
+        }
+-------------------------------------
+add migration to database to add table Book
+add-migration AddBookTableToDatabase
+update-database
+script-migration -- to get db script
+----------------------For Razor---------------
+add new folder in Pages named BookList, then add razor pages Index, Create, Edit, Delete.
+do code for data save, edit, show in list
+add sweet alert to delete confirmation. For this add 03 css files and 04 jquery files in Pages/Shared/_Layout.cshtml page
+----------------------For MVC-----------------
+add code in Startup.cs file
+---------------------------
+services.AddControllerWithViews();
+	public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddDbContext<ApplicationDBContext>(option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddControllersWithViews();
+            services.AddRazorPages().AddRazorRuntimeCompilation();
+        }
+and add endpoints.MapControllers();
+	    app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapRazorPages();
+            });
+---------------------------
+all do same as Razor but only take different folder for Controller in project, 
+then create actionresult for add, edit, delete and index list show
+----------------------------------------------
+
+
